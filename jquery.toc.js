@@ -42,10 +42,10 @@
 
             // Set up some automatic IDs if we do not already have them
             $(thisOptions.content).find(thisOptions.headings).attr("id", function (index, attr) {
-                // Generate a valid ID: must start with a letter, and contain only letters and
+                // Generate a valid ID: must start with a letter, and contain only UNICODE letters and
                 // numbers. All other characters are replaced with underscores.
-                return attr ||
-                    $(this).text().replace(/^[^A-Za-z]*/, "").replace(/[^A-Za-z0-9]+/g, "_");
+                var alphanumericUnicodeRegexp = /[^\u00BF-\u1FFF\u2C00-\uD7FF\w]/g;
+                return attr || $(this).text().replace(alphanumericUnicodeRegexp, "_").replace(/[_]{2,}/g, "_");
             }).each(function () {
                 // What level is the current heading?
                 var elem = $(this), level = $.map(headingSelectors, function (selector, index) {
